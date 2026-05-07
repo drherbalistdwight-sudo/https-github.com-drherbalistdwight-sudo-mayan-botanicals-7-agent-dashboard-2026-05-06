@@ -417,8 +417,13 @@ async function runAgent(agentId, button) {
       context: `Manual dashboard run for ${agent.name}`
     });
 
-    await pollUntilDone(run.jobId);
-    const report = await getJson(`${API_BASE}/report/${encodeURIComponent(run.jobId)}`);
+    let report;
+    if (run.status === "completed" && run.report) {
+      report = run;
+    } else {
+      await pollUntilDone(run.jobId);
+      report = await getJson(`${API_BASE}/report/${encodeURIComponent(run.jobId)}`);
+    }
 
     openModal(`${agent.name} · Run Report`, formatReportText(agent, report));
     showToast(`${agent.name} completed`);
