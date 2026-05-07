@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+const { randomUUID } = require("node:crypto");
 
 const CLAUDE_MODEL = process.env.CLAUDE_MODEL || "claude-sonnet-4-20250514";
 const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY || "";
@@ -167,7 +167,7 @@ async function handleRun(req, res) {
   }
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   const path = req.url || "/";
 
   if (req.method === "GET" && path === "/api/health") {
@@ -232,4 +232,4 @@ export default async function handler(req, res) {
   }
 
   json(res, 404, { error: "Not found" });
-}
+};
